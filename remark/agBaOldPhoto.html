@@ -1,0 +1,182 @@
+<div ng-controller="crudController" data-options="{pojoName:'agBaOldPhoto', pojoIndex:'name'}">
+<div ng-controller="regionsController">
+<div ng-controller="agBaOldPhotoController">
+   
+	<div ng-show="isList()">
+		<div class="dicformBox">
+			<form>
+				<div class="custom-group">
+					<div class="custom-inline-half">
+		                <div class="layui-form-item">
+		                    <label class="layui-form-label">照片内容：</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" class="layui-input" data-ng-model="agBaOldPhotoFilter.photoDate$LIKE">
+		                    </div>
+		                </div>
+		            </div>
+					<div class="custom-inline-half">
+		                <div class="layui-form-item">
+		                    <label class="layui-form-label">照片格式：</label>
+		                    <div class="layui-input-block">
+		                        <input type="text" class="layui-input" data-ng-model="agBaOldPhotoFilter.photoFormat$LIKE">
+		                    </div>
+		                </div>
+		            </div>
+				</div>
+				<div class="btn-group">
+                    <button class="button-01" data-ng-click="submitFilter()">查询</button>
+                    <button class="button-01" data-ng-click="resetFilter()">重置</button>
+                </div>
+			</form>
+		</div>
+		<div class="bg-line" onclick="toggleBox()"><img src="images/ss-01.png" width="32" height="20"></div>
+        <div class="btn_normal">
+        	 <button class="button-01" data-ng-click="create(agBaOldPhoto)">新增</button>
+        </div>
+		<div class="table-container">
+			<table class="table table-striped table-bordered table-hover" id="agBaOldPhotoDatatable">
+				<thead>
+					<tr dictionary="row" class="heading">
+						<th width="5%"  data-options="{mData:null}">序号</th>
+						<th width="10%" data-options="{mData:'photoDate', orderable:true, sClass: ''}">照片内容</th>
+						<th width="10%" data-options="{mData:'photoFormat', orderable:true, sClass: ''}">照片格式</th>
+						<th width="10%" data-options="{toolbar:'renderStandardOpts'}" >操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+    </div>
+
+	<div ng-show="!isList()">
+		<form novalidate name="agBaOldPhotoForm">
+			<div class="dicformBox">
+				<div class="custom-group">
+					<div class="custom-inline-half">
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">外键（老人信息表id）：</label>
+		                    <div class="layui-input-block" ng-show="!isDetail()">
+		                    	<input type="text" class="layui-input" name="agBaOldBaseId" ng-maxlength ="32"
+                        			data-ng-model="agBaOldPhoto.agBaOldBaseId">
+                        	</div>    
+							<div class="layui-input-block" ng-show="isDetail()">
+		                    	&nbsp;{{agBaOldPhoto.agBaOldBaseId}}
+		                    </div>
+		                </div>
+		            </div>
+					<div class="custom-inline-half">
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">照片内容：</label>
+		                    <div class="layui-input-block" ng-show="!isDetail()">
+		                    	<input type="text" class="layui-input" name="photoDate" ng-maxlength ="0"
+                        			data-ng-model="agBaOldPhoto.photoDate">
+                        	</div>    
+							<div class="layui-input-block" ng-show="isDetail()">
+		                    	&nbsp;{{agBaOldPhoto.photoDate}}
+		                    </div>
+		                </div>
+		            </div>
+				</div>
+				<div class="custom-group">
+					<div class="custom-inline-half">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">照片大小：</label>
+                            <div class="layui-input-block" ng-show="!isDetail()">
+							    <select class="form-select" name="photoSize" data-ng-model="agBaOldPhoto.photoSize"
+							    	data-ng-options="v.id as v.name for v in dicts['']">
+					                <option value="">--- 请选择 ---</option>
+						    	</select>
+							</div>    
+							<div class="layui-input-block" ng-show="isDetail()">  
+							    &nbsp;{{agBaOldPhoto.photoSize_name}}
+                            </div>
+                        </div>
+					</div>
+					<div class="custom-inline-half">
+						<div class="layui-form-item">
+		                    <label class="layui-form-label">照片格式：</label>
+		                    <div class="layui-input-block" ng-show="!isDetail()">
+		                    	<input type="text" class="layui-input" name="photoFormat" ng-maxlength ="10"
+                        			data-ng-model="agBaOldPhoto.photoFormat">
+                        	</div>    
+							<div class="layui-input-block" ng-show="isDetail()">
+		                    	&nbsp;{{agBaOldPhoto.photoFormat}}
+		                    </div>
+		                </div>
+		            </div>
+				</div>
+				<div class="custom-group">
+					<div class="custom-inline-half">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">审批状态0待提交;1审批通过;2街道待审批;3审批不通过4区待审批：</label>
+                            <div class="layui-input-block" ng-show="!isDetail()">
+                                <input type="text" class="layui-input" name="tempSaveFlag" data-ng-model="agBaOldPhoto.tempSaveFlag" 
+                                	id="agBaOldPhoto_tempSaveFlag" data-laydate="{type:'date'}"/>
+                            </div>    
+							<div class="layui-input-block" ng-show="isDetail()">     
+                                &nbsp;{{formatDate(agBaOldPhoto.tempSaveFlag)}}
+                            </div>
+                        </div>
+                    </div>
+					<div class="custom-inline-half">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">修改原因：</label>
+                            <div class="layui-input-block" ng-show="!isDetail()">
+							    <select class="form-select" name="modifyComments" data-ng-model="agBaOldPhoto.modifyComments"
+							    	data-ng-options="v.id as v.name for v in dicts['']">
+					                <option value="">--- 请选择 ---</option>
+						    	</select>
+							</div>    
+							<div class="layui-input-block" ng-show="isDetail()">  
+							    &nbsp;{{agBaOldPhoto.modifyComments_name}}
+                            </div>
+                        </div>
+					</div>
+				</div>
+				<div class="custom-group">
+					<div class="custom-inline-half">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">创建时间：</label>
+                            <div class="layui-input-block" ng-show="!isDetail()">
+							    <select class="form-select" name="createDate" data-ng-model="agBaOldPhoto.createDate"
+							    	data-ng-options="v.id as v.name for v in dicts['']">
+					                <option value="">--- 请选择 ---</option>
+						    	</select>
+							</div>    
+							<div class="layui-input-block" ng-show="isDetail()">  
+							    &nbsp;{{agBaOldPhoto.createDate_name}}
+                            </div>
+                        </div>
+					</div>
+					<div class="custom-inline-half">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">创建人：</label>
+                            <div class="layui-input-block" ng-show="!isDetail()">
+							    <select class="form-select" name="createUserId" data-ng-model="agBaOldPhoto.createUserId"
+							    	data-ng-options="v.id as v.name for v in dicts['']">
+					                <option value="">--- 请选择 ---</option>
+						    	</select>
+							</div>    
+							<div class="layui-input-block" ng-show="isDetail()">  
+							    &nbsp;{{agBaOldPhoto.createUserId_name}}
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</form>
+        <div class="layui-form-item">
+            <div class="btn-group">
+                <button type="button" class="button-01" ng-show="!isDetail()" data-ng-click="save(agBaOldPhotoForm)" >
+               		  提交
+                </button>
+                <button type="button" class="button-01" data-ng-click="cancel()">
+                 	  退出
+                </button>
+            </div>
+        </div>
+	</div>		
+</div>
+</div>
+</div>
